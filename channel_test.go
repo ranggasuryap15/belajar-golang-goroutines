@@ -55,3 +55,24 @@ func TestInOut(t *testing.T) {
 	time.Sleep(3 * time.Second)
 	close(channel)
 }
+
+func TestBufferedChannel(t *testing.T) {
+	// buffered itu digunakan untuk menampung hasil pengiriman data
+	channel := make(chan string, 3) // default buffer itu satu
+	defer close(channel)
+
+	go func() {
+		channel <- "Rangga"
+		channel <- "Surya"
+		channel <- "Prayoga"
+	}()
+
+	go func() {
+		fmt.Println(<-channel)
+		fmt.Println(<-channel)
+		fmt.Println(<-channel)
+	}()
+
+	time.Sleep(2 * time.Second)
+	fmt.Println("Selesai")
+}
